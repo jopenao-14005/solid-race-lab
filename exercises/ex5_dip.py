@@ -49,7 +49,15 @@ class DeliveryVan:
 
 
 # TODO(DIP): add a RocketSled class here (name, symbol, position, move()).
+class RocketSled:
+    symbol = "\U0001F680"
 
+    def __init__(self, name):
+        self.name = name
+        self.position = 0
+
+    def move(self):
+        self.position += 8
 
 class Race:
     """VIOLATION (on purpose): this high-level policy is hardwired to two
@@ -58,15 +66,15 @@ class Race:
     abstraction, injected from the outside.
     """
 
-    def __init__(self):
+    def __init__(self, racers, track=None):
         # TODO(DIP): accept `racers` (and optionally `track`) as
         # constructor parameters instead of building vehicles here.
         # Store the racers as `self.racers`.
-        self.vehicles = [SportsCar("Flash"), DeliveryVan("Steady Eddie")]
-        self.track = Track(length=30)
+        self.racers = racers
+        self.track = track or Track(length=30)
 
     def start(self):
-        return self.track.run(self.vehicles)
+        return self.track.run(self.racers)
 
 
 def main():
@@ -78,7 +86,11 @@ def main():
     #   Race(roster_a).start()
     #   roster_b = [RocketSled("Comet"), DeliveryVan("Steady Eddie II")]
     #   Race(roster_b).start()
-    Race().start()
+    roster_a = [SportsCar("Flash"), DeliveryVan("Steady Eddie")]
+    Race(roster_a).start()
+
+    roster_b = [RocketSled("Comet"), DeliveryVan("Steady Eddie II")]
+    Race(roster_b).start()
 
 
 if __name__ == "__main__":
